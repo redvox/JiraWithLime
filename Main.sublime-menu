@@ -1,0 +1,49 @@
+[
+    {
+        "caption": "JiraWithLime",
+        "mnemonic": "n",
+        "id": "JiraWithLime",
+         "children":
+                [
+                    {
+                        "caption" : "Open Config",
+                        "command": "open_file", "args":
+                                {
+                                    "file": "${packages}/JiraWithLime/JiraWithLime.sublime-settings"
+                                },
+                    },
+                    {
+                        "caption": "New Story Tests",
+                        "command": "new_tests"
+                    },
+                    {
+                        "caption": "Create Testcycle for Story",
+                        "command": "create_test_cycle"
+                    },
+                    {
+                        "caption": "Add Test Template",
+                        "command": "add_test_template"
+                    },
+                    {
+                        "caption": "Get Issue Headline",
+                        "command": "get_jira_headline"
+                    },
+                    {
+                        "caption": "Set Username/Password",
+                        "command": "save_username"
+                    },
+                    {
+                        "caption": "Push Tests to Zephyr",
+                        "command": "push_test"
+                    },
+                    {
+                        "caption": "Open in Browser",
+                        "command": "open_in_browser"
+                    },
+                    {
+                        "caption": "Open All Tests in Browser",
+                        "command": "open_all_tests_in_browser"
+                    }
+                ]
+    }
+]

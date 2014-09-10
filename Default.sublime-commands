@@ -1,0 +1,42 @@
+[
+    {
+        "caption": "Jira With Lime: Get Issue Headline",
+        "command": "get_jira_headline"
+    },
+    {
+        "caption": "Jira With Lime: Push Tests",
+        "command": "push_test"
+    },
+    {
+        "caption": "Jira With Lime: Open Issue",
+        "command": "open_issue"
+    },
+    {
+        "caption": "Jira With Lime: Update Issue",
+        "command": "update_issue"
+    },
+    {
+        "caption": "Jira With Lime: New Story Tests",
+        "command": "new_tests"
+    },
+    {
+        "caption": "Jira With Lime: Add Test Template",
+        "command": "add_test_template"
+    },
+    {
+        "caption": "Jira With Lime: Set Username/Password",
+        "command": "save_username"
+    },
+    {
+        "caption": "Jira With Lime: Create Testcycle for Story",
+        "command": "create_test_cycle"
+    },
+    {
+        "caption": "Jira With Lime: Open in Browser",
+        "command": "open_in_browser"
+    },
+    {
+        "caption": "Jira With Lime: Open All Tests in Browser",
+        "command": "open_all_tests_in_browser"
+    }
+]
