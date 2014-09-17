@@ -230,6 +230,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 		self.labels = []
 		self.story = ""
 		self.version = ""
+		self.description = ""
 
 		self.resetFlags()
 		for line in lineCollection:
@@ -282,7 +283,6 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.newTest()
 				self.addValue('name', found.group(1))
 				self.resetFlags()
-				#self.test_flag = True
 				continue
 
 			found = re.search(r'@@ Key:(.*)', line)  
@@ -295,6 +295,8 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 			found = re.search(r'@@ Beschreibung:*(.*)', line) #  
 			if found:
 				print("Found", "Beschreibung", "in Line", self.lineNr)
+				self.description = found.group(1)
+				self.testValues[self.testNr]['description'] = ""
 				self.addValue('description', found.group(1))
 				self.resetFlags()
 				self.description_flag = True
@@ -320,6 +322,8 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 			# 	continue
 			if self.description_flag:
 				self.addValue('description', line)
+				self.description += '  \n'
+				self.description += line
 				continue
 			if self.step_flag:
 				self.addValue('steps', line)
@@ -346,7 +350,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				'story' : self.story,
 				'version' : self.version,
 				'name' : "",
-				'description' : "",
+				'description' : self.description,
 				'steps' : [],
 				'result' : [],
 				'data' : [],
