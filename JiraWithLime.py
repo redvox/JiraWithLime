@@ -4,6 +4,7 @@ from JiraWithLime.lime_connection import LimeConnection
 from JiraWithLime.lime_issue import LimeIssue
 from . import markdown
 from . import markdown2
+
 class GetJiraHeadlineCommand(sublime_plugin.TextCommand):
 	def run(self, edit, issue_key=None):
 		window = self.view.window()
@@ -15,7 +16,7 @@ class GetJiraHeadlineCommand(sublime_plugin.TextCommand):
 			issue = connection.get(issue_key)
 			region = self.view.sel()
 			line = self.view.line(region[0])
-			self.view.insert(edit, line.end(), "\n# "+issue.key+" - "+issue.name+"\n"+issue.description)
+			self.view.insert(edit, line.end(), "\n@ "+issue.key+" - "+issue.name+"\n"+issue.description)
 
 class PromptIssueKeyCommand(sublime_plugin.TextCommand):
 	def run(self, edit, callback):
@@ -38,17 +39,17 @@ class OpenIssueCommand(sublime_plugin.TextCommand):
 
 			TEMPLATE = (
 					"{key} - {name}\n"
-					"## Projekt: {project}\n"
-					"## Projekt Name: {project_name}\n"
-					"## Reporter: {reporter}\n"
-					"## Bearbeiter: {assignee}\n"
-					# "## Updated: {updated}\n"
+					"@@ Projekt: {project}\n"
+					"@@ Projekt Name: {project_name}\n"
+					"@@ Reporter: {reporter}\n"
+					"@@ Bearbeiter: {assignee}\n"
+					# "@@ Updated: {updated}\n"
 					"Sprint: {version}\n"
 					"\n"
-					"## Description:\n"
+					"@@ Description:\n"
 					"{description}\n"
 					"\n"
-					"## Text:\n"
+					"@@ Text:\n"
 					"{text}\n"
 					)
 
@@ -103,17 +104,17 @@ class UpdateIssueCommand(sublime_plugin.TextCommand):
 
 		TEMPLATE = (
 				"{key} - {name}\n"
-				"## Projekt: {project}\n"
-				"## Projekt Name: {project_name}\n"
-				"## Reporter: {reporter}\n"
-				"## Bearbeiter: {assignee}\n"
-				# "## Updated: {updated}\n"
+				"@@ Projekt: {project}\n"
+				"@@ Projekt Name: {project_name}\n"
+				"@@ Reporter: {reporter}\n"
+				"@@ Bearbeiter: {assignee}\n"
+				# "@@ Updated: {updated}\n"
 				# "Sprint: {sprint}\n"
 				"\n"
-				"## Description:\n"
+				"@@ Description:\n"
 				"{description}\n"
 				"\n"
-				"## Text:\n"
+				"@@ Text:\n"
 				"{text}\n"
 				)
 
@@ -144,16 +145,16 @@ class NewTestsCommand(sublime_plugin.TextCommand):
 					"{key} - {name}\n"
 					"{description}\n"
 					"\n"
-					"## Projekt: {project}\n"
-					"## Story: {key}\n"
-					"## Story Reporter: {reporter}\n"
+					"@@ Projekt: {project}\n"
+					"@@ Story: {key}\n"
+					"@@ Story Reporter: {reporter}\n"
 					"\n"
-					"## Version: {version}\n"
-					"## Attribute: {attribute}\n"
-					"## Testgruppen: {testgruppen}\n"
-					'## Komponenten: {components}\n'
-					'## Stichwörter: {lables}\n'
-					'## Bearbeiter: {assignee}\n'
+					"@@ Version: {version}\n"
+					"@@ Attribute: {attribute}\n"
+					"@@ Testgruppen: {testgruppen}\n"
+					'@@ Komponenten: {components}\n'
+					'@@ Stichwörter: {lables}\n'
+					'@@ Bearbeiter: {assignee}\n'
 					"\n"
 					)
 
@@ -180,9 +181,9 @@ class AddTestTemplateCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
 		window = self.view.window()
 		TEST_STEP_TEMPLATE = (
-				"\n# Test:\n"
-				#"## Key:\n"
-				"## Beschreibung\n"
+				"\n@ Test:\n"
+				#"@@ Key:\n"
+				"@@ Beschreibung\n"
 				"{beschreibung_template}"
 				"\n"
 				"----\n"
@@ -234,48 +235,48 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 		for line in lineCollection:
 			self.lineNr = self.lineNr+1
 
-			found = re.search(r'## Projekt:(.+)', line)
+			found = re.search(r'@@ Projekt:(.+)', line)
 			if found:
 				self.project = self.stripSpaces(found.group(1))
 				continue
 			
-			found = re.search(r'## Attribute:(.*)', line)
+			found = re.search(r'@@ Attribute:(.*)', line)
 			if found:
 				self.attributes = self.splitAndStrip(found)
 				continue
 			
-			found = re.search(r'## Testgruppen:(.*)', line)
+			found = re.search(r'@@ Testgruppen:(.*)', line)
 			if found:
 				self.testgroups = self.splitAndStrip(found)
 				continue
 			
-			found = re.search(r'## Komponenten:(.*)', line)
+			found = re.search(r'@@ Komponenten:(.*)', line)
 			if found:
 				self.components = self.splitAndStrip(found)
 				continue
 			
-			found = re.search(r'## Stichwörter:(.*)', line)
+			found = re.search(r'@@ Stichwörter:(.*)', line)
 			if found:
 				self.labels = self.splitAndStrip(found)
 				continue
 
-			found = re.search(r'## Bearbeiter:(.*)', line)
+			found = re.search(r'@@ Bearbeiter:(.*)', line)
 			if found:
 				print("Bearbeiter", line)
 				self.assignee = self.stripSpaces(found.group(1))
 				continue
 			
-			found = re.search(r'## Story:(.+)', line)
+			found = re.search(r'@@ Story:(.+)', line)
 			if found:
 				self.story = self.stripSpaces(found.group(1))
 				continue
 			
-			found = re.search(r'## Version:(.+)', line)
+			found = re.search(r'@@ Version:(.+)', line)
 			if found:
 				self.version = self.stripSpaces(found.group(1))
 				continue
 			
-			found = re.search(r'# Test:(.*)', line)
+			found = re.search(r'@ Test:(.*)', line)
 			if found:
 				print("Found", "Test", "in Line", self.lineNr, line)
 				self.newTest()
@@ -284,14 +285,14 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				#self.test_flag = True
 				continue
 
-			found = re.search(r'## Key:(.*)', line)  
+			found = re.search(r'@@ Key:(.*)', line)  
 			if found:
 				self.testValues[self.testNr]['key'] = self.stripSpaces(found.group(1))
 				self.testValues[self.testNr]['keyLine'] = self.lineNr
 				self.resetFlags()
 				continue
 
-			found = re.search(r'## Beschreibung:*(.*)', line) #  
+			found = re.search(r'@@ Beschreibung:*(.*)', line) #  
 			if found:
 				print("Found", "Beschreibung", "in Line", self.lineNr)
 				self.addValue('description', found.group(1))
@@ -458,7 +459,7 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 			key_text = " "+test['issue_key']
 		else:
 			pt = self.view.text_point(test['lineNr']-1, 0)
-			key_text = "\n## Key: "+test['issue_key']
+			key_text = "\n@@ Key: "+test['issue_key']
 
 		line_region = self.view.line(pt)
 		pt += line_region.b - line_region.a
