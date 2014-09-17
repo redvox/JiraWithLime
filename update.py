@@ -16,7 +16,8 @@ class Update():
 		print("online_version", online_version)
 
 		if current_Version != online_version:
-			print("NEU!")
+			print("Up-Date available. Start update.")
+			self.update()
 		else:
 			print("Your version is Up-To-Date")
 
@@ -31,7 +32,7 @@ class Update():
 		z = zipfile.ZipFile(fh)
 		print("z.namelist()", z.namelist())
 		for name in z.namelist():
-			local_name = name[16:]
+			local_name = name[17:]
 			found = re.search(r'.*/$', name)
 			print(found)
 			if name != 'JiraWithLime.sublime-settings' and local_name != '' and not found:
