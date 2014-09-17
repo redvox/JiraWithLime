@@ -46,6 +46,3 @@ class Update():
 				myfile.close()
 				# z.extract('JiraWithLime1-0/version.txt', '')
 		fh.close()
-
-up = Update()
-up.checkForUpdate()
