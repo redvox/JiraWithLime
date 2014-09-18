@@ -4,44 +4,50 @@ import re
 
 class Update():
 
+	def __init__(self, path, raw_version_url, repo_url):
+		self.path = path
+		self.repo_url = repo_url
+		self.raw_version_url = raw_version_url
+
 	def checkForUpdate(self):
 		print("Test for Update")
-		f = open('version.txt', 'r')
-		current_Version = f.read()
+		f = open(self.path+'version.txt', 'r')
+		self.current_Version = f.read()
 
-		response = requests.get('https://raw.githubusercontent.com/redvox/JiraWithLime/master/version.txt', stream=True)
-		online_version = response.text
+		response = requests.get(self.raw_version_url+'version.txt', stream=True)
+		self.online_version = response.text
 
-		print("current_Version", current_Version)
-		print("online_version", online_version)
+		print("current_Version", self.current_Version, "online_version", self.online_version)
 
-		if current_Version != online_version:
-			print("Up-Date available. Start update.")
-			self.update()
+		if self.current_Version != self.online_version:
+			print("Up-Date available.")
+			return True
 		else:
 			print("Your version is Up-To-Date")
+			return False
 
 	def update(self):
-		response = requests.get('https://github.com/redvox/JiraWithLime/archive/1.0.zip', stream=True)
+		response = requests.get(self.repo_url+self.online_version+'.zip', stream=True)
 		if response.status_code == 200:
-			with open("update.zip", 'wb') as f:
+			with open(self.path+'update.zip', 'wb') as f:
 				for chunk in response.iter_content():
 					f.write(chunk)
 
-		fh = open('update.zip', 'rb')
+		fh = open(self.path+'update.zip', 'rb')
 		z = zipfile.ZipFile(fh)
 		print("z.namelist()", z.namelist())
 		for name in z.namelist():
 			local_name = name[17:]
-			found = re.search(r'.*/$', name)
+			directory = re.search(r'.*/$', name)
+			directory_requests = re.search(r'./requests/.', name)
 			print(found)
-			if name != 'JiraWithLime.sublime-settings' and local_name != '' and not found:
+			if name != 'JiraWithLime.sublime-settings' and local_name != '' and not directory and not directory_requests:
 				print('name', name)
 				print('local_name', local_name)
 		
 				data = z.read(name)
 		
-				myfile = open(local_name, "wb")
+				myfile = open(self.path+local_name, "wb")
 				myfile.write(data)
 				myfile.close()
 				# z.extract('JiraWithLime1-0/version.txt', '')
