@@ -57,12 +57,7 @@ class OpenIssueCommand(sublime_plugin.TextCommand):
 			valuesMap = {}
 			for key in keywords:
 				valuesMap[key] = issue.getattr(key)
-			print("keywords", keywords)
-
 			text = TEMPLATE.format(**valuesMap)
-	
-			# text = "this is a Test %(tx)s!" %{'tx': ' mit erfolg'}
-			# sublime.active_window().open_file("test")
 			window.new_file()
 			view = window.active_view()
 			view.insert(edit, 0, text)
@@ -77,20 +72,6 @@ class GetTestCommand(sublime_plugin.TextCommand):
 		region = self.view.sel()
 		line = self.view.line(region[0])
 		self.view.insert(edit, line.end(), "\n# "+issue.key+" - "+issue.name+"\n"+issue.description)	
-
-# class InsertTestCommand(sublime_plugin.TextCommand):
-# 	def run(self, edit):
-# 	 	window = self.view.window()
-
-# 		TEMPLATE = (
-# 			"Key: {key}\n"
-# 		  )
-
-# 		text = TEMPLATE.format(**{'key':'dies ist ein test'})
-
-# 		window.new_file()
-# 		view = window.active_view()
-# 		view.run_command('replace_all', {'text': text})
 
 class ReplaceAllCommand(sublime_plugin.TextCommand):
 	def run(self, edit, text):
@@ -108,8 +89,6 @@ class UpdateIssueCommand(sublime_plugin.TextCommand):
 				"@@ Projekt Name: {project_name}\n"
 				"@@ Reporter: {reporter}\n"
 				"@@ Bearbeiter: {assignee}\n"
-				# "@@ Updated: {updated}\n"
-				# "Sprint: {sprint}\n"
 				"\n"
 				"@@ Description:\n"
 				"{description}\n"
@@ -317,9 +296,6 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.result_flag = True
 				continue
 
-			# if self.test_flag:
-			# 	self.addValue('name', line)
-			# 	continue
 			if self.description_flag:
 				self.addValue('description', line)
 				self.description += '  \n'
