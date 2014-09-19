@@ -288,7 +288,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 			found = re.search(r'@@ Key:(.*)', line)  
 			if found:
 				self.testValues[self.testNr]['key'] = self.stripSpaces(found.group(1))
-				self.testValues[self.testNr]['keyLine'] = self.lineNr
+				self.testValues[self.testNr]['keyLineNr'] = self.lineNr
 				self.resetFlags()
 				continue
 
@@ -405,6 +405,7 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 
 		self.window = self.view.window()
 		self.connection = LimeConnection()
+		self.offset = 0
 
 		for test in testValues:
 			testIssue = {
@@ -437,8 +438,6 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 			for components in test['components']:
 				testIssue['fields']['components'].append({"name":components})
 
-			print("key",test['key'],"key")
-
 			if(test['key'] == ''):
 				self.createTest(test, testIssue, edit)
 			else:
@@ -458,12 +457,13 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 		test['issue_key'] = issue_key
 
 		###
-		if test['keyLine'] > 0:
-			pt = self.view.text_point(test['keyLine']-1, 0)
+		if test['keyLineNr'] > 0:
+			pt = self.view.text_point(test['keyLineNr']-1+self.offset, 0)
 			key_text = " "+test['issue_key']
 		else:
-			pt = self.view.text_point(test['lineNr']-1, 0)
+			pt = self.view.text_point(test['testLineNr']-1+self.offset, 0)
 			key_text = "\n@@ Key: "+test['issue_key']
+			self.offset = self.offset + 1
 
 		line_region = self.view.line(pt)
 		pt += line_region.b - line_region.a
