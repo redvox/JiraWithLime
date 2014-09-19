@@ -49,7 +49,7 @@ class Update():
 			
 					data = z.read(name)
 			
-					# myfile = open(self.path+local_name, "wb")
-					# myfile.write(data)
-					# myfile.close()
+					myfile = open(self.path+local_name, "wb")
+					myfile.write(data)
+					myfile.close()
 			fh.close()
