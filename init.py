@@ -17,4 +17,4 @@ def plugin_loaded():
 			window = sublime.active_window()
 			window.open_file(path+'/changelog.txt')
 	except:
-		pass
+		print("There was a problem with your connection.")
