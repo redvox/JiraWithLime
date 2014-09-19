@@ -354,8 +354,8 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				'steps' : [],
 				'result' : [],
 				'data' : [],
-				'lineNr' : self.lineNr,
-				'keyLine' : -1,
+				'testLineNr' : self.lineNr,
+				'keyLineNr' : -1,
 				'key' : ""
 				})
 
