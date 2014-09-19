@@ -42,7 +42,7 @@ class Update():
 				local_name = name[package_name_length:]
 				directory = re.search(r'.*/$', name)
 				directory_requests = re.search(r'./requests/.', name)
-				if name != 'JiraWithLime.sublime-settings' and local_name != '' and not directory and not directory_requests:
+				if local_name != 'JiraWithLime.sublime-settings' and local_name != '' and not directory and not directory_requests:
 					print('name', name)
 					print('local_name', local_name)
 
