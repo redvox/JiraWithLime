@@ -386,7 +386,6 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 		self.data_flag = False
 
 	def stripSpaces(self, value):
-		print("strip", value)
 		while len(value) > 0 and (value[0] == ' ' or value[0] == '\t' or value[0] == '\n'):
 			value = value[1:]
 		while len(value) > 0 and (value[-1] == ' ' or value[-1] == '\t' or value[-1] == '\n'):
@@ -421,8 +420,6 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 					"priority" : {
 						"id": "3"
 					},
-					"customfield_15604" : [], #Attribute {"value":"Regressionstest"}
-					"customfield_15601" : [], #Testgruppen "Integration-Test", "Test Test"
 					"customfield_15603" : [test['story']], #Story
 					"components" : [],
 					"versions" : [{"name":test['version']}],
@@ -431,12 +428,23 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 				}
 			}
 
+			print("== 1 ==")
+			if len(test['attributes']) > 0:
+				print("== 2 ==", len(test['attributes']), test['attributes'])
+				testIssue['fields']['customfield_15604'] = []
+
+			if len(test['testgroups']) > 0:
+				testIssue['fields']['customfield_15601'] = []
+
 			for attribut in test['attributes']:
-				testIssue['fields']['customfield_15604'].append({'value' : attribut})
+				if attribut != '':
+					testIssue['fields']['customfield_15604'].append({'value' : attribut})
 			for testgroup in test['testgroups']:
-				testIssue['fields']['customfield_15601'].append(testgroup)
+				if testgroup != '':
+					testIssue['fields']['customfield_15601'].append(testgroup)
 			for components in test['components']:
-				testIssue['fields']['components'].append({"name":components})
+				if components != '':
+					testIssue['fields']['components'].append({"name":components})
 
 			if(test['key'] == ''):
 				self.createTest(test, testIssue, edit)
