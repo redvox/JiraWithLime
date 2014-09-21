@@ -1,9 +1,13 @@
 {
 	"assignee": "",
-	"component" : "",
+	"baseURL": "",
+	"beschreibung_template": "**Vorbedingung**\n\n**Informationen**",
+	"component": "",
 	"password": "",
 	"project": "",
 	"username": "",
-	"beschreibung_template" : "**Vorbedingung**\n\n**Informationen**",
 	"baseURL" : "",
+	"domain" : "",
+	"environment" : "",
+	"browser" : ""
 }
