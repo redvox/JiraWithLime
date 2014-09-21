@@ -131,7 +131,7 @@ class NewTestsCommand(sublime_plugin.TextCommand):
 					"@@ Version: {version}\n"
 					"@@ Attribute: {attribute}\n"
 					"@@ Testgruppen: {testgruppen}\n"
-					'@@ Komponenten: {components}\n'
+					'@@ Komponente: {component}\n'
 					'@@ Stichwörter: {lables}\n'
 					'@@ Bearbeiter: {assignee}\n'
 					"\n"
@@ -145,7 +145,7 @@ class NewTestsCommand(sublime_plugin.TextCommand):
 			valuesMap['key'] = issue_key
 			settings = sublime.load_settings('JiraWithLime.sublime-settings')
 			valuesMap['assignee'] = settings.get('assignee', "")
-			valuesMap['components'] = settings.get('component', "")
+			valuesMap['component'] = settings.get('component', "")
 			
 			text = TEST_HEAD_TEMPLATE.format(**valuesMap)
 
@@ -182,10 +182,57 @@ class AddTestTemplateCommand(sublime_plugin.TextCommand):
 		text = TEST_STEP_TEMPLATE.format(**valuesMap)
 		self.view.insert(edit, self.view.size(), text)
 
+class NewBugCommand(sublime_plugin.TextCommand):
+	def run(self, edit, issue_key=None):
+		window = self.view.window()
+		BUG_HEAD_TEMPLATE = (
+				'\n'
+				'@@ Projekt: {project}\n'
+				#'@@ Stichwörter: {lables}\n'
+				'@@ Domäne: {domain}\n'
+				'@@ Umgebung: {environment}\n'
+				'@@ Browser: {browser}\n'
+				'@@ Komponente: {component}\n'
+				'@@ Bearbeiter: {assignee}\n'
+				'\n'
+				'@@ Version: {version}\n'
+				'\n'
+				'\n'
+				"@ Bug:\n"
+				'@@ Releats:\n'
+				'@@ Blocks:\n'
+				"@@ Beschreibung\n"
+				#"{beschreibung_template}"
+				)
+
+		keywords = re.findall(r'\{([a-z_]+)\}', BUG_HEAD_TEMPLATE)
+		valuesMap = {}
+		for key in keywords:
+			valuesMap[key] = ""
+		valuesMap['key'] = issue_key
+		settings = sublime.load_settings('JiraWithLime.sublime-settings')
+		valuesMap['project'] = settings.get('project', "")
+		valuesMap['component'] = settings.get('component', "")
+		valuesMap['browser'] = settings.get('browser', "")
+		valuesMap['environment'] = settings.get('environment', "")
+		valuesMap['domain'] = settings.get('domain', "")
+		valuesMap['assignee'] = settings.get('assignee', "")
+		
+		text = BUG_HEAD_TEMPLATE.format(**valuesMap)
+
+		window.new_file()
+		view = window.active_view()
+		view.insert(edit, 0, text)
+
 class PushTest(sublime_plugin.TextCommand):
 	def run(self, edit):
 		window = self.view.window()
 		window.run_command('test_grep', {'callback': 'create_test_issues'})
+
+class PushBugs(sublime_plugin.TextCommand):
+	def run(self, edit):
+		window = self.view.window()
+		window.run_command('test_grep', {'callback': 'create_bug_issues'})
 
 class TestGrepCommand(sublime_plugin.TextCommand):
 	def run(self, edit, callback):
@@ -210,6 +257,10 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 		self.story = ""
 		self.version = ""
 		self.description = ""
+		self.domain = ""
+		self.environment = ""
+		self.browser = ""
+		self.links = []
 
 		self.resetFlags()
 		for line in lineCollection:
@@ -261,13 +312,56 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				print("Found", "Test", "in Line", self.lineNr, line)
 				self.newTest()
 				self.addValue('name', found.group(1))
+				self.testValues[self.testNr]['links'].append(['tests', self.story])
+				self.testValues[self.testNr]['type'] = "Test"
+				self.resetFlags()
+				continue			
+
+			found = re.search(r'@ Bug:(.*)', line)
+			if found:
+				print("Found", "Bug", "in Line", self.lineNr, line)
+				self.newTest()
+				self.addValue('name', found.group(1))
+				self.testValues[self.testNr]['type'] = "Bug"
 				self.resetFlags()
 				continue
+
+			found = re.search(r'@@ Domäne:(.*)', line)
+			if found:
+				self.domain = self.stripSpaces(found.group(1))
+				self.resetFlags()
+				continue
+
+			found = re.search(r'@@ Umgebung:(.*)', line)
+			if found:
+				self.environment = self.stripSpaces(found.group(1))
+				self.resetFlags()
+				continue
+
+			found = re.search(r'@@ Browser:(.*)', line)
+			if found:
+				self.browser = self.stripSpaces(found.group(1))
+				self.resetFlags()
+				continue				
 
 			found = re.search(r'@@ Key:(.*)', line)  
 			if found:
 				self.testValues[self.testNr]['key'] = self.stripSpaces(found.group(1))
 				self.testValues[self.testNr]['keyLineNr'] = self.lineNr
+				self.resetFlags()
+				continue
+
+			found = re.search(r'@@ Blocks:(.*)', line)  
+			if found:
+				#self.links.append(['Blocks', self.stripSpaces(found.group(1))])
+				self.testValues[self.testNr]['links'].append(['Blocks', self.stripSpaces(found.group(1))])
+				self.resetFlags()
+				continue			
+
+			found = re.search(r'@@ Relates:(.*)', line)  
+			if found:
+				#self.links.append(['Relates', self.stripSpaces(found.group(1))])
+				self.testValues[self.testNr]['links'].append(['Relates', self.stripSpaces(found.group(1))])
 				self.resetFlags()
 				continue
 
@@ -332,7 +426,12 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				'data' : [],
 				'testLineNr' : self.lineNr,
 				'keyLineNr' : -1,
-				'key' : ""
+				'key' : '',
+				'type' : '',
+				'domain' : self.domain,
+				'environment' : self.environment,
+				'browser' : self.browser,
+				'links' : []
 				})
 
 	def newStep(self):

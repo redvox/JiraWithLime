@@ -13,6 +13,30 @@
                                 },
                     },
                     {
+                        "caption": "Get Issue Headline",
+                        "command": "get_jira_headline"
+                    },
+                    {
+                        "caption": "Set Username/Password",
+                        "command": "save_username"
+                    },
+                    {
+                        "caption": "Open in Browser",
+                        "command": "open_in_browser"
+                    },
+                    {
+                        "caption": "Open All Issues in Browser",
+                        "command": "open_all_tests_in_browser"
+                    }
+                ]
+    },
+    {
+        "caption": "TestWithLime",
+        "mnemonic": "n",
+        "id": "TestWithLime",
+         "children":
+                [
+                    {
                         "caption": "New Story Tests",
                         "command": "new_tests"
                     },
@@ -25,24 +49,24 @@
                         "command": "add_test_template"
                     },
                     {
-                        "caption": "Get Issue Headline",
-                        "command": "get_jira_headline"
-                    },
-                    {
-                        "caption": "Set Username/Password",
-                        "command": "save_username"
-                    },
-                    {
                         "caption": "Push Tests to Zephyr",
                         "command": "push_test"
+                    }
+                ]
+    },
+    {
+        "caption": "BugWithLime",
+        "mnemonic": "n",
+        "id": "BugWithLime",
+         "children":
+                [
+                    {
+                        "caption": "New Bug",
+                        "command": "new_bug"
                     },
                     {
-                        "caption": "Open in Browser",
-                        "command": "open_in_browser"
-                    },
-                    {
-                        "caption": "Open All Tests in Browser",
-                        "command": "open_all_tests_in_browser"
+                        "caption": "Push Bug to Jira",
+                        "command": "push_test"
                     }
                 ]
     }

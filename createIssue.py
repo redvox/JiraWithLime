@@ -64,10 +64,8 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 			sublime.error_message("Response: "+str(response.status_code))
 			raise Exception("Status was", response.status_code)
 				
-		issue_id = data['id']
-		issue_key = data['key']
-		test['issue_id'] = issue_id
-		test['issue_key'] = issue_key
+		test['issue_id'] = data['id']
+		test['issue_key'] = data['key']
 
 		###
 		if test['keyLineNr'] > 0:
@@ -90,7 +88,7 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 					"data": test['data'][i],
 					"result": test['result'][i]
 				}
-				self.connection.createTestStep(issue_id, teststep) #ID!  230076
+				self.connection.createTestStep(test['issue_id'], teststep) #ID!  230076
 
 		# Link Test
 		# Auf die Blanke URL!!
@@ -100,7 +98,7 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 		        "name": "Tests" # Tests, cloned by etc
 		    },
 		    "inwardIssue": {
-				"key": issue_key # Ausgehend
+				"key": test['issue_key'] # Ausgehend
 			},
 		    "outwardIssue": {
 		        "key": test['story'] # Wird getestet
@@ -167,11 +165,12 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 					"fixVersions" : [{"name":test['version']}],
 					# "labels" : test['labels'],
 					"assignee" : {'name' : test['assignee']},
-					"customfield_11018" : {"value" : "Domäne Bestellen"},
-					"customfield_11013" : {"value": "LHOTSE-develop"},
-					"customfield_11006" : {"value" : "Browserunabhängig"}
+					"customfield_11018" : {"value" : test['domain']},
+					"customfield_11013" : {"value": test['environment']},
+					"customfield_11006" : {"value" : test['browser']}
 				}
 			}
+
 
 			for components in test['components']:
 				if components != '':
@@ -190,10 +189,8 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 			sublime.error_message("Response: "+str(response.status_code))
 			raise Exception("Status was", response.status_code)
 				
-		issue_id = data['id']
-		issue_key = data['key']
-		test['issue_id'] = issue_id
-		test['issue_key'] = issue_key
+		test['issue_id'] = data['id']
+		test['issue_key'] = data['key']
 
 		###
 		if test['keyLineNr'] > 0:
@@ -208,22 +205,7 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 		pt += line_region.b - line_region.a
 		self.view.insert(edit, pt, key_text)
 		###
-
-		# Link Test
-		# Auf die Blanke URL!!
-		# inward key muss der Tests sein.
-		link = {
-			"type": {
-		        "name": "Tests" # Tests, cloned by etc Blocks, Relates
-		    },
-		    "inwardIssue": {
-				"key": issue_key # Ausgehend
-			},
-		    "outwardIssue": {
-		        "key": test['story'] # Wird getestet
-		    }
-		}
-		self.connection.createLink("", link)
+		self.createLinks(test)
 
 	def updateTest(self, test, testIssue, edit):
 		response = self.connection.update(test['key'], testIssue)
@@ -232,5 +214,23 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 			sublime.error_message("Response: "+str(response.status_code))
 			raise Exception("Status was", response.status_code)
 			
-		issue = self.connection.get(test['key'])
-		r, data = self.connection.getTestStep(issue.id)
+		self.createLinks(test)
+
+	def createLinks(self, test):
+		print("Creating Links", len(test['links']))
+		for link in test['links']:
+			# Link Test
+			# Auf die Blanke URL!!
+			# inward key muss der Tests sein.
+			link = {
+				"type": {
+			        "name": link[0] # Tests, cloned by etc Blocks, Relates
+			    },
+			    "inwardIssue": {
+					"key": test['key'] # Ausgehend
+				},
+			    "outwardIssue": {
+			        "key": link[1] # Wird getestet
+			    }
+			}
+			self.connection.createLink("", link)
