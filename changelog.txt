@@ -5,7 +5,19 @@
 ██   ██║██║██╔══██╗██╔══██║    ██║███╗██║██║   ██║   ██╔══██║    ██║     ██║██║╚██╔╝██║██╔══╝  
 ╚█████╔╝██║██║  ██║██║  ██║    ╚███╔███╔╝██║   ██║   ██║  ██║    ███████╗██║██║ ╚═╝ ██║███████╗
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
-	even lime is sweeter than Jira                                                                                                                                                                                         
+	even lime is sweeter than Jira                                                                                                               
+
+V1.4:
+New Menus.
+New Bug Creation Feature.
+
+There are new config fields:
+	"domain" : "",
+	"environment" : "",
+	"browser" : ""
+
+Attibutes are now optional.
+
 V1.3:
 Update now works with certificate errors.
 
