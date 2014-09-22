@@ -229,7 +229,7 @@ class PushTest(sublime_plugin.TextCommand):
 		window = self.view.window()
 		window.run_command('test_grep', {'callback': 'create_test_issues'})
 
-class PushBugs(sublime_plugin.TextCommand):
+class PushBug(sublime_plugin.TextCommand):
 	def run(self, edit):
 		window = self.view.window()
 		window.run_command('test_grep', {'callback': 'create_bug_issues'})
@@ -281,7 +281,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.testgroups = self.splitAndStrip(found)
 				continue
 			
-			found = re.search(r'@@ Komponenten:(.*)', line)
+			found = re.search(r'@@ Komponente:(.*)', line)
 			if found:
 				self.components = self.splitAndStrip(found)
 				continue
