@@ -6,6 +6,12 @@
 ╚█████╔╝██║██║  ██║██║  ██║    ╚███╔███╔╝██║   ██║   ██║  ██║    ███████╗██║██║ ╚═╝ ██║███████╗
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
 	even lime is sweeter than Jira                                                                                                               
+V1.5:
+Added testgroup fiel in config file.
+
+Please add
+	"testgroup" : ""
+to your config.
 
 V1.4:
 New Menus.
