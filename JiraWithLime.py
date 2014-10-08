@@ -130,7 +130,7 @@ class NewTestsCommand(sublime_plugin.TextCommand):
 					"\n"
 					"@@ Version: {version}\n"
 					"@@ Attribute: {attribute}\n"
-					"@@ Testgruppen: {testgruppen}\n"
+					"@@ Testgruppen: {testgroup}\n"
 					'@@ Komponente: {component}\n'
 					'@@ Stichwörter: {lables}\n'
 					'@@ Bearbeiter: {assignee}\n'
@@ -146,6 +146,7 @@ class NewTestsCommand(sublime_plugin.TextCommand):
 			settings = sublime.load_settings('JiraWithLime.sublime-settings')
 			valuesMap['assignee'] = settings.get('assignee', "")
 			valuesMap['component'] = settings.get('component', "")
+			valuesMap['testgroup'] = settings.get('testgroup', "")
 			
 			text = TEST_HEAD_TEMPLATE.format(**valuesMap)
 
