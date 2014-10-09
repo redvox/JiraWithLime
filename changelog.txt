@@ -6,6 +6,12 @@
 ╚█████╔╝██║██║  ██║██║  ██║    ╚███╔███╔╝██║   ██║   ██║  ██║    ███████╗██║██║ ╚═╝ ██║███████╗
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
 	even lime is sweeter than Jira                                                                                                               
+V1.6:
+Es gab ein Problem, wenn man an irgendeiner Stelle -> benutzt hat wurde das als Testschritt erkannt.
+-> werden jetzt nur noch als Testschritte erkannt wenn sie unter hinter den ----.
+
+---- Werden nur erkannt wenn sie alleine in einer Zeile stehen.
+
 V1.5:
 Added testgroup fiel in config file.
 

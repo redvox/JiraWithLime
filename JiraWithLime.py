@@ -376,7 +376,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.description_flag = True
 				continue
 
-			found = re.search(r'----', line)
+			found = re.search(r'^----$', line)
 			if found:
 				self.newStep()
 				self.resetFlags()
@@ -384,7 +384,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				continue
 
 			found = re.search(r'(.*)->(.*)', line)
-			if found:
+			if found and self.step_flag:
 				self.addValue('steps', found.group(1))
 				self.addValue('result', found.group(2))
 				self.resetFlags()
@@ -443,6 +443,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 		self.testValues[self.testNr]['data'].append("")
 
 	def addValue(self, vtype, value):
+		print("Add Value", "vtype", vtype, "value", value)
 		value = self.stripSpaces(value)
 		if type(self.testValues[self.testNr][vtype]) == list:
 			if self.testValues[self.testNr][vtype][self.stepNr] != '':
