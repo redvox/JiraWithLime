@@ -267,48 +267,48 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 		for line in lineCollection:
 			self.lineNr = self.lineNr+1
 
-			found = re.search(r'@@ Projekt:(.+)', line)
+			found = re.search(r'^@@ Projekt:(.+)', line)
 			if found:
 				self.project = self.stripSpaces(found.group(1))
 				continue
 			
-			found = re.search(r'@@ Attribute:(.*)', line)
+			found = re.search(r'^@@ Attribute:(.*)', line)
 			if found:
 				self.attributes = self.splitAndStrip(found)
 				continue
 			
-			found = re.search(r'@@ Testgruppen:(.*)', line)
+			found = re.search(r'^@@ Testgruppen:(.*)', line)
 			if found:
 				self.testgroups = self.splitAndStrip(found)
 				continue
 			
-			found = re.search(r'@@ Komponente:(.*)', line)
+			found = re.search(r'^@@ Komponente:(.*)', line)
 			if found:
 				self.components = self.splitAndStrip(found)
 				continue
 			
-			found = re.search(r'@@ Stichwörter:(.*)', line)
+			found = re.search(r'^@@ Stichwörter:(.*)', line)
 			if found:
 				self.labels = self.splitAndStrip(found)
 				continue
 
-			found = re.search(r'@@ Bearbeiter:(.*)', line)
+			found = re.search(r'^@@ Bearbeiter:(.*)', line)
 			if found:
 				print("Bearbeiter", line)
 				self.assignee = self.stripSpaces(found.group(1))
 				continue
 			
-			found = re.search(r'@@ Story:(.+)', line)
+			found = re.search(r'^@@ Story:(.+)', line)
 			if found:
 				self.story = self.stripSpaces(found.group(1))
 				continue
 			
-			found = re.search(r'@@ Version:(.+)', line)
+			found = re.search(r'^@@ Version:(.+)', line)
 			if found:
 				self.version = self.stripSpaces(found.group(1))
 				continue
 			
-			found = re.search(r'@ Test:(.*)', line)
+			found = re.search(r'^@ Test:(.*)', line)
 			if found:
 				print("Found", "Test", "in Line", self.lineNr, line)
 				self.newTest()
@@ -318,7 +318,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.resetFlags()
 				continue			
 
-			found = re.search(r'@ Bug:(.*)', line)
+			found = re.search(r'^@ Bug:(.*)', line)
 			if found:
 				print("Found", "Bug", "in Line", self.lineNr, line)
 				self.newTest()
@@ -327,46 +327,46 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.resetFlags()
 				continue
 
-			found = re.search(r'@@ Domäne:(.*)', line)
+			found = re.search(r'^@@ Domäne:(.*)', line)
 			if found:
 				self.domain = self.stripSpaces(found.group(1))
 				self.resetFlags()
 				continue
 
-			found = re.search(r'@@ Umgebung:(.*)', line)
+			found = re.search(r'^@@ Umgebung:(.*)', line)
 			if found:
 				self.environment = self.stripSpaces(found.group(1))
 				self.resetFlags()
 				continue
 
-			found = re.search(r'@@ Browser:(.*)', line)
+			found = re.search(r'^@@ Browser:(.*)', line)
 			if found:
 				self.browser = self.stripSpaces(found.group(1))
 				self.resetFlags()
 				continue				
 
-			found = re.search(r'@@ Key:(.*)', line)  
+			found = re.search(r'^@@ Key:(.*)', line)  
 			if found:
 				self.testValues[self.testNr]['key'] = self.stripSpaces(found.group(1))
 				self.testValues[self.testNr]['keyLineNr'] = self.lineNr
 				self.resetFlags()
 				continue
 
-			found = re.search(r'@@ Blocks:(.*)', line)  
+			found = re.search(r'^@@ Blocks:(.*)', line)  
 			if found:
 				#self.links.append(['Blocks', self.stripSpaces(found.group(1))])
 				self.testValues[self.testNr]['links'].append(['Blocks', self.stripSpaces(found.group(1))])
 				self.resetFlags()
 				continue			
 
-			found = re.search(r'@@ Relates:(.*)', line)  
+			found = re.search(r'^@@ Relates:(.*)', line)  
 			if found:
 				#self.links.append(['Relates', self.stripSpaces(found.group(1))])
 				self.testValues[self.testNr]['links'].append(['Relates', self.stripSpaces(found.group(1))])
 				self.resetFlags()
 				continue
 
-			found = re.search(r'@@ Beschreibung:*(.*)', line) #  
+			found = re.search(r'^@@ Beschreibung:*(.*)', line) #  
 			if found:
 				print("Found", "Beschreibung", "in Line", self.lineNr)
 				self.description = found.group(1)
