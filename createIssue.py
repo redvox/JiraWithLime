@@ -5,6 +5,16 @@ from JiraWithLime.lime_issue import LimeIssue
 from . import markdown
 from . import markdown2
 
+class PushTest(sublime_plugin.TextCommand):
+	def run(self, edit):
+		window = self.view.window()
+		window.run_command('test_grep', {'callback': 'create_test_issues'})
+
+class PushBug(sublime_plugin.TextCommand):
+	def run(self, edit):
+		window = self.view.window()
+		window.run_command('test_grep', {'callback': 'create_bug_issues'})
+
 class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 	def run(self, edit, testValues):
 		print("Beginn creating Test Issues")
