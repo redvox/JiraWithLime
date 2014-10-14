@@ -1,4 +1,5 @@
 import sublime, sublime_plugin
+import re
 
 class TestGrepCommand(sublime_plugin.TextCommand):
 	def run(self, edit, callback):
