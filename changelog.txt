@@ -6,6 +6,14 @@
 ╚█████╔╝██║██║  ██║██║  ██║    ╚███╔███╔╝██║   ██║   ██║  ██║    ███████╗██║██║ ╚═╝ ██║███████╗
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
 	even lime is sweeter than Jira                                                                                                               
+V1.7:
+Markdown Table support hinzugefügt.
+
+Beispieltabelle:
+|        normal       | left  	     | center  | right       |
+|---------------------|:-------------|:-------:|------------:|
+|  					  | links-bündig |zentriert|rechts-bündig|
+
 V1.6:
 Es gab ein Problem, wenn man an irgendeiner Stelle -> benutzt hat wurde das als Testschritt erkannt.
 -> werden jetzt nur noch als Testschritte erkannt wenn sie unter hinter den ----.
