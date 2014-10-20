@@ -5,7 +5,27 @@
 ██   ██║██║██╔══██╗██╔══██║    ██║███╗██║██║   ██║   ██╔══██║    ██║     ██║██║╚██╔╝██║██╔══╝  
 ╚█████╔╝██║██║  ██║██║  ██║    ╚███╔███╔╝██║   ██║   ██║  ██║    ███████╗██║██║ ╚═╝ ██║███████╗
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
-	even lime is sweeter than Jira                                                                                                               
+	even lime is sweeter than Jira     
+V1.8:
+Testdate kann nun in die Teststeps eingetragen werden.
+Im Teststep wird alles unter @@ als Testdaten erkannt (@@ muss allein in einer Zeile stehen).
+
+Beispiel:
+
+----
+Schritt 1
+->
+Ergebnis 1
+@@
+Testdaten 1
+----
+Schritt 2
+@@
+Testdaten 2
+->
+Ergebnis 2
+----
+
 V1.7:
 Markdown Table support hinzugefügt.
 
