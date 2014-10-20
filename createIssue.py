@@ -2,6 +2,7 @@ import sublime, sublime_plugin
 import re
 from JiraWithLime.lime_connection import LimeConnection
 from JiraWithLime.lime_issue import LimeIssue
+from JiraWithLime.my_markdown import MyMarkdownParser
 from . import markdown
 from . import markdown2
 
@@ -22,7 +23,7 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 		self.window = self.view.window()
 		self.connection = LimeConnection()
 		self.offset = 0
-
+		self.parser = MyMarkdownParser() 
 		for test in testValues:
 			testIssue = {
 				'fields' : {
@@ -30,7 +31,7 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 						'key' : test['project']
 					},
 					"summary" : test['name'],
-					"description" : markdown2.markdown(test['description']),
+					"description" : self.parser.build_markdown(test['description']),
 					"issuetype" : {
 						"name" : "Test"
 					},
@@ -156,7 +157,7 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 		self.window = self.view.window()
 		self.connection = LimeConnection()
 		self.offset = 0
-
+		self.parser = MyMarkdownParser() 
 		for test in testValues:
 			testIssue = {
 				'fields' : {
@@ -164,7 +165,7 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 						'key' : test['project']
 					},
 					"summary" : test['name'],
-					"description" : markdown2.markdown(test['description']),
+					"description" : self.parser.build_markdown(test['description']),
 					"issuetype" : {
 						"name" : "Bug"
 					},
