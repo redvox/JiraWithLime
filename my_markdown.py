@@ -63,6 +63,6 @@ class MyMarkdownParser():
 
 		processed_text = ''
 		for line in text:
-			processed_text+=line+'<br>'
-		print('processed_text', processed_text)
+			line_w_break = line+' \n '
+			processed_text+=line_w_break
 		return processed_text
