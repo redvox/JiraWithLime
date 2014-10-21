@@ -6,6 +6,9 @@
 ╚█████╔╝██║██║  ██║██║  ██║    ╚███╔███╔╝██║   ██║   ██║  ██║    ███████╗██║██║ ╚═╝ ██║███████╗
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
 	even lime is sweeter than Jira     
+V1.8.1:
+Fixed linebreak issue.
+
 V1.8:
 Testdate kann nun in die Teststeps eingetragen werden.
 Im Teststep wird alles unter @@ als Testdaten erkannt (@@ muss allein in einer Zeile stehen).
