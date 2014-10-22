@@ -5,7 +5,12 @@
 ██   ██║██║██╔══██╗██╔══██║    ██║███╗██║██║   ██║   ██╔══██║    ██║     ██║██║╚██╔╝██║██╔══╝  
 ╚█████╔╝██║██║  ██║██║  ██║    ╚███╔███╔╝██║   ██║   ██║  ██║    ███████╗██║██║ ╚═╝ ██║███████╗
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
-	even lime is sweeter than Jira     
+	even lime is sweeter than Jira
+																		Author: Jens Schaa 2014
+V1.8.2:
+Fixed the fix.
+Throught an extra space, headlines and bulletpoints were not correctly parsed by Markdown. 
+
 V1.8.1:
 Fixed linebreak issue.
 
