@@ -182,18 +182,17 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 				}
 			}
 
-
 			for components in test['components']:
 				if components != '':
 					testIssue['fields']['components'].append({"name":components})
 
 			if(test['key'] == ''):
-				self.createTest(test, testIssue, edit)
+				self.createBug(test, testIssue, edit)
 			else:
-				self.updateTest(test, testIssue, edit)
+				self.updateBug(test, testIssue, edit)
 		sublime.message_dialog("Finish")
 	
-	def createTest(self, test, testIssue, edit):
+	def createBug(self, test, testIssue, edit):
 		response, data = self.connection.createTestIssue(testIssue)
 
 		if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
@@ -218,7 +217,7 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 		###
 		self.createLinks(test)
 
-	def updateTest(self, test, testIssue, edit):
+	def updateBug(self, test, testIssue, edit):
 		response = self.connection.update(test['key'], testIssue)
 
 		if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:

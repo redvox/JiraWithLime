@@ -44,7 +44,7 @@ class OpenIssueCommand(sublime_plugin.TextCommand):
 					"@@ Reporter: {reporter}\n"
 					"@@ Bearbeiter: {assignee}\n"
 					# "@@ Updated: {updated}\n"
-					"Sprint: {version}\n"
+					"@@ Sprint: {version}\n"
 					"\n"
 					"@@ Description:\n"
 					"{description}\n"
