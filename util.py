@@ -1,4 +1,5 @@
 import sublime, sublime_plugin
+import json
 from JiraWithLime.lime_connection import LimeConnection
 
 class Util():
@@ -19,6 +20,20 @@ class Util():
 			sublime.error_message("Could not find Version "+name)
 			raise Exception("Could not find Version")
 		return versionId
+
+	@staticmethod
+	def getEpicMap():
+		name = 'JiraWithLime.sublime-settings'
+		settings = sublime.load_settings(name)
+		project = settings.get('project', '')
+
+		conn = LimeConnection()
+		r = conn.getEpics(project)
+		epicMap = json.loads(r.text)["epicNames"]
+		epicArray = []
+		for epic in epicMap:
+			epicArray.append(epic["name"])
+		return epicMap, epicArray
 
 class SaveUsername(sublime_plugin.TextCommand):
 	def run(self, edit):
@@ -41,3 +56,28 @@ class SaveUsername(sublime_plugin.TextCommand):
 		settings.set('username', enc_username)
 		settings.set('password', enc_password)
 		sublime.save_settings(name)
+
+class insertEpics(sublime_plugin.TextCommand):
+	def run(self, edit, epicName=None):
+		if not epicName:
+			self.epicMap, self.epicArray = Util.getEpicMap()
+			window = self.view.window()
+			window.show_quick_panel(self.epicArray, self.run_command)
+		else:
+			self.insert(edit, epicName)
+
+	def run_command(self, value):
+		self.view.run_command(
+                    "insert_epics",
+                    {
+                        "epicName": self.epicArray[value]
+                    }
+                )
+
+	def insert(self, edit, epicName):
+		regionSet = self.view.sel()
+		for region in regionSet:
+			string = self.view.substr(region)
+			self.view.insert(edit, region.begin(), epicName)
+			# self.view.insert(edit, region.begin(), tagOpen)
+			#self.view.insert(edit, region.end()+len(tagOpen), tagEnd)
