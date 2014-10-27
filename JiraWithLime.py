@@ -2,7 +2,6 @@ import sublime, sublime_plugin
 import re
 from JiraWithLime.lime_connection import LimeConnection
 from JiraWithLime.lime_issue import LimeIssue
-from . import markdown
 from . import markdown2
 
 class GetJiraHeadlineCommand(sublime_plugin.TextCommand):
@@ -209,6 +208,45 @@ class NewBugCommand(sublime_plugin.TextCommand):
 		valuesMap['assignee'] = settings.get('assignee', "")
 		
 		text = BUG_HEAD_TEMPLATE.format(**valuesMap)
+
+		window.new_file()
+		view = window.active_view()
+		view.insert(edit, 0, text)
+
+class NewStoryCommand(sublime_plugin.TextCommand):
+	def run(self, edit, issue_key=None):
+		window = self.view.window()
+		STORY_HEAD_TEMPLATE = (
+			'@@ Projekt: {project}\n'
+			'\n'
+			"@@ Version: {version}\n"
+			'@@ Komponente: {component}\n'
+			'@@ Stichwörter: {lables}\n'
+			'@@ Bearbeiter: {assignee}\n'
+			'@@ Epic: {epic}\n'
+			'\n'
+			'\n'
+			'@ Story: \n'
+			'@@ Kurzbeschreibung\n'
+			'\n'
+			'@@ Beschreibung\n'
+			"{story_description_template}"
+			'\n'
+			)
+
+		keywords = re.findall(r'\{([a-z_]+)\}', STORY_HEAD_TEMPLATE)
+		valuesMap = {}
+		for key in keywords:
+			valuesMap[key] = ""
+		valuesMap['key'] = issue_key
+		settings = sublime.load_settings('JiraWithLime.sublime-settings')
+		valuesMap['story_description_template'] = settings.get('story_description_template', "")
+		valuesMap['project'] = settings.get('project', "")
+		valuesMap['lables'] = settings.get('story_lables', "")
+		valuesMap['component'] = settings.get('component', "")
+		valuesMap['assignee'] = settings.get('assignee', "")
+		
+		text = STORY_HEAD_TEMPLATE.format(**valuesMap)
 
 		window.new_file()
 		view = window.active_view()
