@@ -69,5 +69,25 @@
                         "command": "push_bug"
                     }
                 ]
+    },
+    {
+        "caption": "StoryWithLime",
+        "mnemonic": "n",
+        "id": "StoryWithLime",
+         "children":
+                [
+                    {
+                        "caption": "New Story",
+                        "command": "new_story"
+                    },
+                    {
+                        "caption": "Insert Epic Link",
+                        "command": "insert_epics"
+                    },
+                    {
+                        "caption": "Push Story to Jira",
+                        "command": "push_story"
+                    }
+                ]
     }
 ]
