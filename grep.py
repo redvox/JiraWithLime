@@ -24,6 +24,8 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 		self.story = ""
 		self.version = ""
 		self.description = ""
+		self.short_description = ""
+		self.epic = ""
 		self.domain = ""
 		self.environment = ""
 		self.browser = ""
@@ -93,6 +95,20 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.resetFlags()
 				continue
 
+			found = re.search(r'^@ Story:(.*)', line)
+			if found:
+				print("Found", "Story", "in Line", self.lineNr, line)
+				self.newTest()
+				self.addValue('name', found.group(1))
+				self.testValues[self.testNr]['type'] = "Story"
+				self.resetFlags()
+				continue
+
+			found = re.search(r'^@@ Epic:(.*)', line)
+			if found:
+				self.epic = self.splitAndStrip(found)
+				continue
+
 			found = re.search(r'^@@ Domäne:(.*)', line)
 			if found:
 				self.domain = self.stripSpaces(found.group(1))
@@ -142,6 +158,16 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.description_flag = True
 				continue
 
+			found = re.search(r'^@@ Kurzbeschreibung:*(.*)', line) #  
+			if found:
+				print("Found", "Kurzbeschreibung", "in Line", self.lineNr)
+				self.short_description = found.group(1)
+				self.testValues[self.testNr]['short_description'] = ""
+				self.addValue('short_description', found.group(1))
+				self.resetFlags()
+				self.short_description_flag = True
+				continue
+
 			found = re.search(r'^----$', line)
 			if found:
 				self.newStep()
@@ -169,6 +195,12 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.description += '  \n'
 				self.description += line
 				continue
+				
+			if self.short_description_flag:
+				self.addValue('short_description', line)
+				self.short_description += '  \n'
+				self.short_description += line
+				continue
 			if self.step_flag:
 				self.addValue('steps', line)
 				continue
@@ -195,6 +227,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				'version' : self.version,
 				'name' : "",
 				'description' : self.description,
+				'short_description' : self.short_description,
 				'steps' : [],
 				'result' : [],
 				'data' : [],
@@ -203,6 +236,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				'key' : '',
 				'type' : '',
 				'domain' : self.domain,
+				'epic' : self.epic,
 				'environment' : self.environment,
 				'browser' : self.browser,
 				'links' : []
@@ -231,6 +265,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 		self.test_flag = False
 		self.key_flag = False
 		self.description_flag = False
+		self.short_description_flag = False
 		self.step_flag = False
 		self.result_flag = False
 		self.data_flag = False
