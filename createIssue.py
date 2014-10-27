@@ -3,7 +3,7 @@ import re
 from JiraWithLime.lime_connection import LimeConnection
 from JiraWithLime.lime_issue import LimeIssue
 from JiraWithLime.my_markdown import MyMarkdownParser
-from . import markdown
+from JiraWithLime.util import Util
 from . import markdown2
 
 class PushTest(sublime_plugin.TextCommand):
@@ -15,6 +15,11 @@ class PushBug(sublime_plugin.TextCommand):
 	def run(self, edit):
 		window = self.view.window()
 		window.run_command('test_grep', {'callback': 'create_bug_issues'})
+
+class PushStory(sublime_plugin.TextCommand):
+	def run(self, edit):
+		window = self.view.window()
+		window.run_command('test_grep', {'callback': 'create_story_issues'})
 
 class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 	def run(self, edit, testValues):
@@ -244,3 +249,92 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 			    }
 			}
 			self.connection.createLink("", link)
+
+class CreateStoryIssuesCommand(sublime_plugin.TextCommand):
+	def run(self, edit, testValues):
+		print("Beginn creating Story Issues")
+
+		self.window = self.view.window()
+		self.connection = LimeConnection()
+		self.offset = 0
+		self.parser = MyMarkdownParser()
+		for test in testValues:
+			testIssue = {
+				'fields' : {
+					"project" : {
+						'key' : test['project']
+					},
+					"summary" : test['name'],
+					"description" : self.parser.build_markdown(test['description']),
+					"issuetype" : {
+						"name" : "Story"
+					},
+					"priority" : {
+						"id": "3"
+					},
+					"customfield_11800" : "Argh "+test['short_description'],
+					"customfield_15502" : "Argh "+test['short_description'],
+					"components" : [],
+					"versions" : [{"name":test['version']}],
+					"labels" : test['labels'],
+					"assignee" : {'name' : test['assignee']}
+				}
+			}
+
+			for components in test['components']:
+				if components != '':
+					testIssue['fields']['components'].append({"name":components})
+
+			if(test['key'] == ''):
+				self.createStory(test, testIssue, edit)
+			else:
+				self.updateStory(test, testIssue, edit)
+		sublime.message_dialog("Finish")
+	
+	def createStory(self, test, testIssue, edit):
+		response, data = self.connection.createTestIssue(testIssue)
+
+		if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
+			sublime.error_message("Response: "+str(response.status_code))
+			raise Exception("Status was", response.status_code)
+				
+		test['issue_id'] = data['id']
+		test['issue_key'] = data['key']
+
+		###
+		if test['keyLineNr'] > 0:
+			pt = self.view.text_point(test['keyLineNr']-1+self.offset, 0)
+			key_text = " "+test['issue_key']
+		else:
+			pt = self.view.text_point(test['testLineNr']-1+self.offset, 0)
+			key_text = "\n@@ Key: "+test['issue_key']
+			self.offset = self.offset + 1
+
+		line_region = self.view.line(pt)
+		pt += line_region.b - line_region.a
+		self.view.insert(edit, pt, key_text)
+		self.createEpicLinks(test)
+
+	def updateStory(self, test, testIssue, edit):
+		response = self.connection.update(test['key'], testIssue)
+
+		if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
+			sublime.error_message("Response: "+str(response.status_code))
+			raise Exception("Status was", response.status_code)
+		self.createEpicLinks(test)
+
+	def createEpicLinks(self, test):
+		print("Creating Epic Links", len(test['epic']))
+		self.epicMap, self.epicArray = Util.getEpicMap()
+		for epic in test['epic']:
+			for oEpic in self.epicMap:
+				if oEpic['name'] == epic:
+					epicKey = oEpic['key']
+					break
+			link = {
+					'ignoreEpics':'true',
+					'issueKeys':[
+						test['key']
+						]
+					}
+			self.connection.addToEpic(epicKey, link)
