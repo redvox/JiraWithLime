@@ -112,4 +112,15 @@ class LimeConnection:
 		print(request.text)
 		print("------ RESPONSE ------")
 
+	def getEpics(self, project):
+		print("Get all epics for", project)
+		r = requests.get(self.baseURL+"/rest/greenhopper/1.0/epics?searchQuery=&projectKey=LHO3&maxResults=10000", headers=self.headers, auth=(self.username, self.password), verify=False)
+		self.printRequestStatus(r)
+		return r
+
+	def addToEpic(self, epicKey, data):
+		r = requests.put(self.baseURL+"/rest/greenhopper/1.0/epics/"+epicKey+"/add", data=json.dumps(data), headers=self.headers, auth=(self.username, self.password), verify=False)
+		self.printRequestStatus(r)
+		return r
+
 	
