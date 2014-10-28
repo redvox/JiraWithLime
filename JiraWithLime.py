@@ -188,7 +188,7 @@ class NewBugCommand(sublime_plugin.TextCommand):
 				'\n'
 				'\n'
 				"@ Bug:\n"
-				'@@ Releats:\n'
+				'@@ Relates:\n'
 				'@@ Blocks:\n'
 				"@@ Beschreibung\n"
 				#"{beschreibung_template}"
