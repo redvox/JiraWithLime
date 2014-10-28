@@ -81,15 +81,15 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 			raise Exception("Status was", response.status_code)
 				
 		test['issue_id'] = data['id']
-		test['issue_key'] = data['key']
+		test['key'] = data['key']
 
 		###
 		if test['keyLineNr'] > 0:
 			pt = self.view.text_point(test['keyLineNr']-1+self.offset, 0)
-			key_text = " "+test['issue_key']
+			key_text = " "+test['key']
 		else:
 			pt = self.view.text_point(test['testLineNr']-1+self.offset, 0)
-			key_text = "\n@@ Key: "+test['issue_key']
+			key_text = "\n@@ Key: "+test['key']
 			self.offset = self.offset + 1
 
 		line_region = self.view.line(pt)
@@ -114,7 +114,7 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 		        "name": "Tests" # Tests, cloned by etc
 		    },
 		    "inwardIssue": {
-				"key": test['issue_key'] # Ausgehend
+				"key": test['key'] # Ausgehend
 			},
 		    "outwardIssue": {
 		        "key": test['story'] # Wird getestet
@@ -205,15 +205,15 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 			raise Exception("Status was", response.status_code)
 				
 		test['issue_id'] = data['id']
-		test['issue_key'] = data['key']
+		test['key'] = data['key']
 
 		###
 		if test['keyLineNr'] > 0:
 			pt = self.view.text_point(test['keyLineNr']-1+self.offset, 0)
-			key_text = " "+test['issue_key']
+			key_text = " "+test['key']
 		else:
 			pt = self.view.text_point(test['testLineNr']-1+self.offset, 0)
-			key_text = "\n@@ Key: "+test['issue_key']
+			key_text = "\n@@ Key: "+test['key']
 			self.offset = self.offset + 1
 
 		line_region = self.view.line(pt)
@@ -299,15 +299,15 @@ class CreateStoryIssuesCommand(sublime_plugin.TextCommand):
 			raise Exception("Status was", response.status_code)
 				
 		test['issue_id'] = data['id']
-		test['issue_key'] = data['key']
+		test['key'] = data['key']
 
 		###
 		if test['keyLineNr'] > 0:
 			pt = self.view.text_point(test['keyLineNr']-1+self.offset, 0)
-			key_text = " "+test['issue_key']
+			key_text = " "+test['key']
 		else:
 			pt = self.view.text_point(test['testLineNr']-1+self.offset, 0)
-			key_text = "\n@@ Key: "+test['issue_key']
+			key_text = "\n@@ Key: "+test['key']
 			self.offset = self.offset + 1
 
 		line_region = self.view.line(pt)
