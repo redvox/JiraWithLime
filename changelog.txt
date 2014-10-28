@@ -7,6 +7,10 @@
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
 	even lime is sweeter than Jira
 																		Author: Jens Schaa 2014
+V1.9:
+Added StoryWithLime.
+Now you can write storys with Lime.
+
 V1.8.2:
 Fixed the fix.
 Throught an extra space, headlines and bulletpoints were not correctly parsed by Markdown. 
