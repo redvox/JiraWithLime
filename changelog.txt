@@ -7,6 +7,10 @@
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
 	even lime is sweeter than Jira
 																		Author: Jens Schaa 2014
+V1.9.1:
+Fixed typo in Bug 'Relates'.
+Fixed index issue, where links were not properly created.
+
 V1.9:
 Added StoryWithLime.
 Now you can write storys with Lime.
