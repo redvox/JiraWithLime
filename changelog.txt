@@ -7,6 +7,21 @@
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
 	even lime is sweeter than Jira
 																		Author: Jens Schaa 2014
+V1.9.2:
+
+WARNING!
+In Testssteps '->' must now stand alone in line.
+----
+Step
+->
+Result
+----
+
+The following is not possible anymore!
+----
+Step -> Result
+----
+
 V1.9.1:
 Fixed typo in Bug 'Relates'.
 Fixed index issue, where links were not properly created.
@@ -14,6 +29,10 @@ Fixed index issue, where links were not properly created.
 V1.9:
 Added StoryWithLime.
 Now you can write storys with Lime.
+
+New Config fields:
+	"story_lables" : "",
+	"story_description_template" : ""
 
 V1.8.2:
 Fixed the fix.
