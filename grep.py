@@ -182,10 +182,8 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.data_flag = True
 				continue
 
-			found = re.search(r'(.*)->(.*)', line)
+			found = re.search(r'^->$', line)
 			if found and self.test_steps_flag:
-				self.addValue('steps', found.group(1))
-				self.addValue('result', found.group(2))
 				self.resetFlags()
 				self.result_flag = True
 				continue
