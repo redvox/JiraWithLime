@@ -119,6 +119,7 @@ class LimeConnection:
 		return r
 
 	def addToEpic(self, epicKey, data):
+		print("Add for epic", epicKey, "with", data)
 		r = requests.put(self.baseURL+"/rest/greenhopper/1.0/epics/"+epicKey+"/add", data=json.dumps(data), headers=self.headers, auth=(self.username, self.password), verify=False)
 		self.printRequestStatus(r)
 		return r
