@@ -7,94 +7,100 @@
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
 	even lime is sweeter than Jira
 																		Author: Jens Schaa 2014
+V1.9.3:
+	Some keyword now allow whitespace behind them.
+
+	ie '->', '@@' and '----'
+
+	This sould make the parsing more rubust.
+
 V1.9.2:
-
-WARNING!
-In Testssteps '->' must now stand alone in line.
-----
-Step
-->
-Result
-----
-
-The following is not possible anymore!
-----
-Step -> Result
-----
+	WARNING!
+	In Testssteps '->' must now stand alone in line.
+	----
+	Step
+	->
+	Result
+	----
+	
+	The following is not possible anymore!
+	----
+	Step -> Result
+	----
 
 V1.9.1:
-Fixed typo in Bug 'Relates'.
-Fixed index issue, where links were not properly created.
-
-V1.9:
-Added StoryWithLime.
-Now you can write storys with Lime.
-
-New Config fields:
-	"story_lables" : "",
-	"story_description_template" : ""
+	Fixed typo in Bug 'Relates'.
+	Fixed index issue, where links were not properly created.
+	
+	V1.9:
+	Added StoryWithLime.
+	Now you can write storys with Lime.
+	
+	New Config fields:
+		"story_lables" : "",
+		"story_description_template" : ""
 
 V1.8.2:
-Fixed the fix.
-Throught an extra space, headlines and bulletpoints were not correctly parsed by Markdown. 
+	Fixed the fix.
+	Throught an extra space, headlines and bulletpoints were not correctly parsed by Markdown. 
 
 V1.8.1:
-Fixed linebreak issue.
+	Fixed linebreak issue.
 
 V1.8:
-Testdate kann nun in die Teststeps eingetragen werden.
-Im Teststep wird alles unter @@ als Testdaten erkannt (@@ muss allein in einer Zeile stehen).
-
-Beispiel:
-
-----
-Schritt 1
-->
-Ergebnis 1
-@@
-Testdaten 1
-----
-Schritt 2
-@@
-Testdaten 2
-->
-Ergebnis 2
-----
+	Testdate kann nun in die Teststeps eingetragen werden.
+	Im Teststep wird alles unter @@ als Testdaten erkannt (@@ muss allein in einer Zeile stehen).
+	
+	Beispiel:
+	
+	----
+	Schritt 1
+	->
+	Ergebnis 1
+	@@
+	Testdaten 1
+	----
+	Schritt 2
+	@@
+	Testdaten 2
+	->
+	Ergebnis 2
+	----
 
 V1.7:
-Markdown Table support hinzugefügt.
-
-Beispieltabelle:
-|        normal       | left  	     | center  | right       |
-|---------------------|:-------------|:-------:|------------:|
-|  					  | links-bündig |zentriert|rechts-bündig|
-
+	Markdown Table support hinzugefügt.
+	
+	Beispieltabelle:
+	|        normal       | left  	     | center  | right       |
+	|---------------------|:-------------|:-------:|------------:|
+	|  					  | links-bündig |zentriert|rechts-bündig|
+	
 V1.6:
-Es gab ein Problem, wenn man an irgendeiner Stelle -> benutzt hat wurde das als Testschritt erkannt.
--> werden jetzt nur noch als Testschritte erkannt wenn sie unter hinter den ----.
-
----- Werden nur erkannt wenn sie alleine in einer Zeile stehen.
-
+	Es gab ein Problem, wenn man an irgendeiner Stelle -> benutzt hat wurde das als Testschritt erkannt.
+	-> werden jetzt nur noch als Testschritte erkannt wenn sie unter hinter den ----.
+	
+	---- Werden nur erkannt wenn sie alleine in einer Zeile stehen.
+	
 V1.5:
-Added testgroup fiel in config file.
-
-Please add
-	"testgroup" : ""
-to your config.
-
-V1.4:
-New Menus.
-New Bug Creation Feature.
-
-There are new config fields:
-	"domain" : "",
-	"environment" : "",
-	"browser" : ""
-
-Attibutes are now optional.
-
+	Added testgroup fiel in config file.
+	
+	Please add
+		"testgroup" : ""
+	to your config.
+	
+	V1.4:
+	New Menus.
+	New Bug Creation Feature.
+	
+	There are new config fields:
+		"domain" : "",
+		"environment" : "",
+		"browser" : ""
+	
+	Attibutes are now optional.
+	
 V1.3:
-Update now works with certificate errors.
+	Update now works with certificate errors.
 
 V1.2:
-Update Function now succesful implemented.
+	Update Function now succesful implemented.
