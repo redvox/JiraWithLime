@@ -168,7 +168,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.short_description_flag = True
 				continue
 
-			found = re.search(r'^----$', line)
+			found = re.search(r'^----\s*$', line)
 			if found:
 				self.newStep()
 				self.resetFlags()
@@ -176,13 +176,13 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.step_flag = True
 				continue
 
-			found = re.search(r'^@@$',line)
+			found = re.search(r'^@@\s*$',line)
 			if found and self.test_steps_flag:
 				self.resetFlags()
 				self.data_flag = True
 				continue
 
-			found = re.search(r'^->$', line)
+			found = re.search(r'^->\s*$', line)
 			if found and self.test_steps_flag:
 				self.resetFlags()
 				self.result_flag = True
