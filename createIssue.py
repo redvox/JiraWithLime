@@ -21,7 +21,7 @@ class PushStory(sublime_plugin.TextCommand):
 		window = self.view.window()
 		window.run_command('test_grep', {'callback': 'create_story_issues'})
 
-class CreateTestIssuesCommand(sublime_plugin.TextCommand):
+class createTestIssuesCommand(sublime_plugin.TextCommand):
 	def run(self, edit, testValues):
 		print("Beginn creating Test Issues")
 
@@ -30,7 +30,7 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 		self.offset = 0
 		self.parser = MyMarkdownParser() 
 		for test in testValues:
-			testIssue = {
+			newIssue = {
 				'fields' : {
 					"project" : {
 						'key' : test['project']
@@ -52,29 +52,29 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 			}
 
 			if len(test['attributes']) > 0:
-				testIssue['fields']['customfield_15604'] = []
+				newIssue['fields']['customfield_15604'] = []
 
 			if len(test['testgroups']) > 0:
-				testIssue['fields']['customfield_15601'] = []
+				newIssue['fields']['customfield_15601'] = []
 
 			for attribut in test['attributes']:
 				if attribut != '':
-					testIssue['fields']['customfield_15604'].append({'value' : attribut})
+					newIssue['fields']['customfield_15604'].append({'value' : attribut})
 			for testgroup in test['testgroups']:
 				if testgroup != '':
-					testIssue['fields']['customfield_15601'].append(testgroup)
+					newIssue['fields']['customfield_15601'].append(testgroup)
 			for components in test['components']:
 				if components != '':
-					testIssue['fields']['components'].append({"name":components})
+					newIssue['fields']['components'].append({"name":components})
 
 			if(test['key'] == ''):
-				self.createTest(test, testIssue, edit)
+				self.createTest(test, newIssue, edit)
 			else:
-				self.updateTest(test, testIssue, edit)
+				self.updateTest(test, newIssue, edit)
 		sublime.message_dialog("Finish")
 	
-	def createTest(self, test, testIssue, edit):
-		response, data = self.connection.createTestIssue(testIssue)
+	def createTest(self, test, newIssue, edit):
+		response, data = self.connection.createTestIssue(newIssue)
 
 		if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
 			sublime.error_message("Response: "+str(response.status_code))
@@ -122,8 +122,8 @@ class CreateTestIssuesCommand(sublime_plugin.TextCommand):
 		}
 		self.connection.createLink("", link)
 
-	def updateTest(self, test, testIssue, edit):
-		response = self.connection.update(test['key'], testIssue)
+	def updateTest(self, test, newIssue, edit):
+		response = self.connection.update(test['key'], newIssue)
 
 		if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
 			sublime.error_message("Response: "+str(response.status_code))
@@ -164,7 +164,7 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 		self.offset = 0
 		self.parser = MyMarkdownParser() 
 		for test in testValues:
-			testIssue = {
+			newIssue = {
 				'fields' : {
 					"project" : {
 						'key' : test['project']
@@ -189,16 +189,16 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 
 			for components in test['components']:
 				if components != '':
-					testIssue['fields']['components'].append({"name":components})
+					newIssue['fields']['components'].append({"name":components})
 
 			if(test['key'] == ''):
-				self.createBug(test, testIssue, edit)
+				self.createBug(test, newIssue, edit)
 			else:
-				self.updateBug(test, testIssue, edit)
+				self.updateBug(test, newIssue, edit)
 		sublime.message_dialog("Finish")
 	
-	def createBug(self, test, testIssue, edit):
-		response, data = self.connection.createTestIssue(testIssue)
+	def createBug(self, test, newIssue, edit):
+		response, data = self.connection.createTestIssue(newIssue)
 
 		if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
 			sublime.error_message("Response: "+str(response.status_code))
@@ -222,8 +222,8 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 		###
 		self.createLinks(test)
 
-	def updateBug(self, test, testIssue, edit):
-		response = self.connection.update(test['key'], testIssue)
+	def updateBug(self, test, newIssue, edit):
+		response = self.connection.update(test['key'], newIssue)
 
 		if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
 			sublime.error_message("Response: "+str(response.status_code))
@@ -259,7 +259,7 @@ class CreateStoryIssuesCommand(sublime_plugin.TextCommand):
 		self.offset = 0
 		self.parser = MyMarkdownParser()
 		for test in testValues:
-			testIssue = {
+			newIssue = {
 				'fields' : {
 					"project" : {
 						'key' : test['project']
@@ -267,12 +267,12 @@ class CreateStoryIssuesCommand(sublime_plugin.TextCommand):
 					"summary" : test['name'],
 					"description" : self.parser.build_markdown(test['description']),
 					"issuetype" : {
-						"name" : "Story"
+						"name" : test['type']
 					},
 					"priority" : {
 						"id": "3"
 					},
-					"customfield_11800" : "Argh "+test['short_description'],
+					"customfield_11800" : test['short_description'],
 					"customfield_15502" : "Argh "+test['short_description'],
 					"components" : [],
 					"versions" : [{"name":test['version']}],
@@ -283,16 +283,16 @@ class CreateStoryIssuesCommand(sublime_plugin.TextCommand):
 
 			for components in test['components']:
 				if components != '':
-					testIssue['fields']['components'].append({"name":components})
+					newIssue['fields']['components'].append({'name':components})
 
 			if(test['key'] == ''):
-				self.createStory(test, testIssue, edit)
+				self.createStory(test, newIssue, edit)
 			else:
-				self.updateStory(test, testIssue, edit)
+				self.updateStory(test, newIssue, edit)
 		sublime.message_dialog("Finish")
 	
-	def createStory(self, test, testIssue, edit):
-		response, data = self.connection.createTestIssue(testIssue)
+	def createStory(self, test, newIssue, edit):
+		response, data = self.connection.createTestIssue(newIssue)
 
 		if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
 			sublime.error_message("Response: "+str(response.status_code))
@@ -315,8 +315,8 @@ class CreateStoryIssuesCommand(sublime_plugin.TextCommand):
 		self.view.insert(edit, pt, key_text)
 		self.createEpicLinks(test)
 
-	def updateStory(self, test, testIssue, edit):
-		response = self.connection.update(test['key'], testIssue)
+	def updateStory(self, test, newIssue, edit):
+		response = self.connection.update(test['key'], newIssue)
 
 		if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
 			sublime.error_message("Response: "+str(response.status_code))
