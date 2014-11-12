@@ -30,6 +30,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 		self.environment = ""
 		self.browser = ""
 		self.links = []
+		self.parent = ''
 
 		self.resetFlags()
 		for line in lineCollection:
@@ -104,6 +105,16 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.resetFlags()
 				continue
 
+			found = re.search(r'^@ Subtask:(.*)', line)
+			if found:
+				print("Found", "Aufgabe", "in Line", self.lineNr, line)
+				self.newIssue()
+				self.addValue('name', found.group(1))
+				self.testValues[self.testNr]['type'] = "Subtask"
+				self.testValues[self.testNr]['epic'] = ""
+				self.resetFlags()
+				continue
+
 			found = re.search(r'^@@ Epic:(.*)', line)
 			if found:
 				self.epic = self.splitAndStrip(found)
@@ -145,6 +156,12 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 			if found:
 				#self.links.append(['Relates', self.stripSpaces(found.group(1))])
 				self.testValues[self.testNr]['links'].append(['Relates', self.stripSpaces(found.group(1))])
+				self.resetFlags()
+				continue
+
+			found = re.search(r'^@@ Parent:(.*)', line)  
+			if found:
+				self.parent = self.stripSpaces(found.group(1))
 				self.resetFlags()
 				continue
 
@@ -237,7 +254,8 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				'epic' : self.epic,
 				'environment' : self.environment,
 				'browser' : self.browser,
-				'links' : []
+				'links' : [],
+				'parent' : self.parent
 				})
 
 	def newStep(self):
