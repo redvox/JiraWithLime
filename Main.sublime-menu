@@ -41,8 +41,20 @@
                         "command": "new_tests"
                     },
                     {
-                        "caption": "Create Testcycle for Story",
-                        "command": "create_test_cycle"
+                        "caption": "Create Testcycle for Story Key",
+                        "command": "create_test_cycle",
+                        "args" :
+                        {
+                            "cycletype": "story"
+                        },
+                    },
+                    {
+                        "caption": "Create Testcycle for Lable",
+                        "command": "create_test_cycle",
+                        "args" :
+                        {
+                            "cycletype": "lable"
+                        },
                     },
                     {
                         "caption": "Add Test Template",
