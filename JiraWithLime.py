@@ -224,13 +224,19 @@ class NewStoryCommand(sublime_plugin.TextCommand):
 			'@@ Stichwörter: {lables}\n'
 			'@@ Bearbeiter: {assignee}\n'
 			'@@ Epic: {epic}\n'
-			'\n'
+			'@@ Subtask-Parent:\n'
 			'\n'
 			'@ Story: \n'
 			'@@ Kurzbeschreibung\n'
 			'\n'
 			'@@ Beschreibung\n'
 			"{story_description_template}"
+			'\n'
+			'\n'
+			'@ Subtask:\n'
+			'@@ Kurzbeschreibung\n'
+			'\n'
+			'@@ Beschreibung\n'
 			'\n'
 			)
 
