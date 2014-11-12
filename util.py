@@ -4,6 +4,12 @@ from JiraWithLime.lime_connection import LimeConnection
 
 class Util():
 	@staticmethod
+	def getProjectId(projectKey):
+		connection = LimeConnection()
+		response, data = connection.getProjectId(projectKey)
+		return data["id"]
+
+	@staticmethod
 	def findVersionId(projectID, name): #10905
 		versionId = -1
 		connection = LimeConnection()
@@ -34,6 +40,31 @@ class Util():
 		for epic in epicMap:
 			epicArray.append(epic["name"])
 		return epicMap, epicArray
+
+	@staticmethod
+	def getAllIssueKeysFromSearch(fields, values):
+		searchString = ""
+		for i in range(len(fields)):
+			searchString+=fields[i]
+			searchString+=" = "
+			searchString+=values[i]
+			if(i < len(fields)-1): searchString+=" and "
+
+		searchJson = {
+			'jql' : searchString,
+			"startAt" : 0,
+			"maxResults" : 10,
+			"fields" : ["id","key","issuetype"]
+		}
+
+		connection = LimeConnection()
+		response, data = connection.searchIssues(searchJson)
+		testList = []
+		for issue in data['issues']:
+			# issue['fields']['key']
+			print("issueField", issue['key'])
+			testList.append(issue['key'])
+		return testList
 
 class SaveUsername(sublime_plugin.TextCommand):
 	def run(self, edit):
@@ -81,3 +112,4 @@ class insertEpics(sublime_plugin.TextCommand):
 			self.view.insert(edit, region.begin(), epicName)
 			# self.view.insert(edit, region.begin(), tagOpen)
 			#self.view.insert(edit, region.end()+len(tagOpen), tagEnd)
+		

@@ -13,16 +13,18 @@ class LimeConnection:
 		self.baseURL = settings.get('baseURL')
 		
 		self.issueURL = self.baseURL + "/rest/api/2/issue/"
+		self.projectURL = self.baseURL + "/rest/api/2/project/"
 		self.linkIssueURL = self.baseURL + "/rest/api/2/issueLink"
 		self.addCommentURL = self.baseURL + "/rest/api/2/issue/%s/comment/"
 		self.createTestStepURL = self.baseURL + "/rest/zapi/latest/teststep/"
+		self.searchURL = self.baseURL + "/rest/api/2/search"	
 		self.testCycleURL = self.baseURL + "/rest/zapi/latest/cycle/"
 		self.testCycleAddTestsURL = self.baseURL + "/rest/zapi/latest/execution/addTestsToCycle/"
 		self.transitionURL = self.baseURL + "/rest/api/2/issue/%s/transitions?expand=transitions.fields"
 		self.uploadFileURL = self.baseURL + "/rest/api/2/issue/%s/attachment"
 		# self.versionURL = self.baseURL + "/rest/api/2/version/"
-		self.versionURL = self.baseURL + "/rest/zapi/latest/util/versionBoard-list"
-		self.projectURL = self.baseURL + "/rest/zapi/latest/util/project-list"
+		self.versionListURL = self.baseURL + "/rest/zapi/latest/util/versionBoard-list"
+		self.projectListURL = self.baseURL + "/rest/zapi/latest/util/project-list"
 		self.headers = {'content-type': 'application/json'}
 
 	def get(self, issue):
@@ -76,16 +78,20 @@ class LimeConnection:
 		return True	
 	
 	def getAllVersionsOfProject(self, projectID):
-		r = requests.get(self.versionURL+"?projectId="+projectID, headers=self.headers, auth=(self.username, self.password), verify=False)
+		r = requests.get(self.versionListURL+"?projectId="+projectID, headers=self.headers, auth=(self.username, self.password), verify=False)
 		self.printRequestStatus(r)
-		return r, json.loads(r.text)	
+		return r, json.loads(r.text)
 
 	def getAllProjects(self):
-		r = requests.get(self.projectURL, headers=self.headers, auth=(self.username, self.password), verify=False)
+		r = requests.get(self.projectListURL, headers=self.headers, auth=(self.username, self.password), verify=False)
 		self.printRequestStatus(r)
-		return r		
-		
+		return r	
 
+	def searchIssues(self, data):
+		r = requests.post(self.searchURL, data=json.dumps(data), headers=self.headers, auth=(self.username, self.password), verify=False)
+		self.printRequestStatus(r)
+		return r, json.loads(r.text)
+		
 	""" Update Jira Issue with put """
 	def update(self, issue, data):
 		print("Update Jira Issue for", issue, "Data:", data)
@@ -124,4 +130,9 @@ class LimeConnection:
 		self.printRequestStatus(r)
 		return r
 
-	
+	def getProjectId(self, project):
+		print("Get project id for", project)
+		r = requests.get(self.projectURL+project, headers=self.headers, auth=(self.username, self.password), verify=False)
+		print("URL ", self.projectURL+project)
+		self.printRequestStatus(r)
+		return r, json.loads(r.text)
