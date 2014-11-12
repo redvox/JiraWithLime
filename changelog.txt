@@ -7,6 +7,23 @@
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
 	even lime is sweeter than Jira
 																		Author: Jens Schaa 2014
+V1.10:
+	You can create Test Cycles from Lables now.
+	Which means, every Tests with the specified lable will be insert in a new Test Cycle. 
+
+	JiraWithLime now can create Storys with Subtasks.
+
+	Example:
+		@ Subtask: Awesome Subtask Title
+		@@ Kurzbeschreibung
+		Awesome short Desctiption
+		@@ Beschreibung
+		Awesome Desctiption
+
+	If a Story is specified above the Subtask, it will automatically associated with it.
+
+	If you just want to add Subtasks to an already existing Story, please use the '@@ Parent:' field with an issue key.
+
 V1.9.3:
 	Some keyword now allow whitespace behind them.
 
