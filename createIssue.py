@@ -273,13 +273,21 @@ class CreateStoryIssuesCommand(sublime_plugin.TextCommand):
 						"id": "3"
 					},
 					"customfield_11800" : test['short_description'],
-					"customfield_15502" : "Argh "+test['short_description'],
 					"components" : [],
 					"versions" : [{"name":test['version']}],
-					"labels" : test['labels'],
 					"assignee" : {'name' : test['assignee']}
 				}
 			}
+
+			if test['type'] == 'Story':
+				newIssue['customfield_15502'] = test['short_description']
+				newIssue['labels'] = test['labels']
+
+			if test['type'] == 'Subtask':
+				if self.prevIssueKey != '':
+					newIssue['fields']['parent'] = {"key": self.prevIssueKey }
+				else:
+					newIssue['fields']['parent'] = {"key": test['parent'] }
 
 			for components in test['components']:
 				if components != '':
@@ -289,6 +297,11 @@ class CreateStoryIssuesCommand(sublime_plugin.TextCommand):
 				self.createStory(test, newIssue, edit)
 			else:
 				self.updateStory(test, newIssue, edit)
+
+			if test['type'] == 'Story':
+				self.prevIssueKey = test['key']
+				if test['epic'] != ['']:
+					self.createEpicLinks(test)
 		sublime.message_dialog("Finish")
 	
 	def createStory(self, test, newIssue, edit):
@@ -301,7 +314,6 @@ class CreateStoryIssuesCommand(sublime_plugin.TextCommand):
 		test['issue_id'] = data['id']
 		test['key'] = data['key']
 
-		###
 		if test['keyLineNr'] > 0:
 			pt = self.view.text_point(test['keyLineNr']-1+self.offset, 0)
 			key_text = " "+test['key']
@@ -313,7 +325,6 @@ class CreateStoryIssuesCommand(sublime_plugin.TextCommand):
 		line_region = self.view.line(pt)
 		pt += line_region.b - line_region.a
 		self.view.insert(edit, pt, key_text)
-		self.createEpicLinks(test)
 
 	def updateStory(self, test, newIssue, edit):
 		response = self.connection.update(test['key'], newIssue)
@@ -321,7 +332,6 @@ class CreateStoryIssuesCommand(sublime_plugin.TextCommand):
 		if response.status_code != 200 and response.status_code != 201 and response.status_code != 204:
 			sublime.error_message("Response: "+str(response.status_code))
 			raise Exception("Status was", response.status_code)
-		self.createEpicLinks(test)
 
 	def createEpicLinks(self, test):
 		print("Creating Epic Links", len(test['epic']))
