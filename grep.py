@@ -79,7 +79,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 			found = re.search(r'^@ Test:(.*)', line)
 			if found:
 				print("Found", "Test", "in Line", self.lineNr, line)
-				self.newTest()
+				self.newIssue()
 				self.addValue('name', found.group(1))
 				self.testValues[self.testNr]['links'].append(['tests', self.story])
 				self.testValues[self.testNr]['type'] = "Test"
@@ -89,7 +89,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 			found = re.search(r'^@ Bug:(.*)', line)
 			if found:
 				print("Found", "Bug", "in Line", self.lineNr, line)
-				self.newTest()
+				self.newIssue()
 				self.addValue('name', found.group(1))
 				self.testValues[self.testNr]['type'] = "Bug"
 				self.resetFlags()
@@ -98,7 +98,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 			found = re.search(r'^@ Story:(.*)', line)
 			if found:
 				print("Found", "Story", "in Line", self.lineNr, line)
-				self.newTest()
+				self.newIssue()
 				self.addValue('name', found.group(1))
 				self.testValues[self.testNr]['type'] = "Story"
 				self.resetFlags()
@@ -211,7 +211,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 
 		window.run_command(callback, {'testValues': self.testValues})
 
-	def newTest(self):
+	def newIssue(self):
 		self.testNr = self.testNr+1
 		self.stepNr = -1
 		self.testValues.append({
