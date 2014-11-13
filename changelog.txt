@@ -7,6 +7,9 @@
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
 	even lime is sweeter than Jira
 																		Author: Jens Schaa 2014
+V1.10.1:
+	Fixed typo.
+																		
 V1.10:
 	You can create Test Cycles from Lables now.
 	Which means, every Tests with the specified lable will be insert in a new Test Cycle. 
