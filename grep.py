@@ -159,7 +159,7 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				self.resetFlags()
 				continue
 
-			found = re.search(r'^@@ Parent:(.*)', line)  
+			found = re.search(r'^@@ Subtask-Parent:(.*)', line)  
 			if found:
 				self.parent = self.stripSpaces(found.group(1))
 				self.resetFlags()
