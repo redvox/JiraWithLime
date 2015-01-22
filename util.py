@@ -53,7 +53,7 @@ class Util():
 		searchJson = {
 			'jql' : searchString,
 			"startAt" : 0,
-			"maxResults" : 10,
+			"maxResults" : 100,
 			"fields" : ["id","key","issuetype"]
 		}
 
