@@ -7,6 +7,17 @@
  ╚════╝ ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝     ╚══╝╚══╝ ╚═╝   ╚═╝   ╚═╝  ╚═╝    ╚══════╝╚═╝╚═╝     ╚═╝╚══════╝
 	even lime is sweeter than Jira
 																		Author: Jens Schaa 2014
+V1.11.0 (19.02.2014):
+	Adjusted bug creation.
+	The mask has changed and some field are renamed.
+
+	"operatingsystem" : ""
+	"device" : 
+
+	Are new. Please feel free to add them to your config file.
+
+██████████████████████████████████
+
 V1.10.2:
 	Increased max search results from 10 to 100.
 
