@@ -29,6 +29,8 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 		self.domain = ""
 		self.environment = ""
 		self.browser = ""
+		self.operatingsystem = ""
+		self.device = ""
 		self.links = []
 		self.parent = ''
 
