@@ -1,7 +1,7 @@
 {
 	"assignee": "",
 	"baseURL": "",
-	"beschreibung_template": "**Vorbedingung**\n\n**Informationen**",
+	"beschreibung_template": "",
 	"component": "",
 	"project": "",
 	"password": "",
@@ -9,5 +9,7 @@
 	"domain" : "",
 	"environment" : "",
 	"browser" : "",
+	"operatingsystem" : "",
+	"device" : "",
 	"testgroup" : ""
 }
