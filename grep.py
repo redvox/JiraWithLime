@@ -134,7 +134,19 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 
 			found = re.search(r'^@@ Browser:(.*)', line)
 			if found:
-				self.browser = self.stripSpaces(found.group(1))
+				self.browser = self.splitAndStrip(found)
+				self.resetFlags()
+				continue		
+
+			found = re.search(r'^@@ Device:(.*)', line)
+			if found:
+				self.device = self.splitAndStrip(found)
+				self.resetFlags()
+				continue	
+
+			found = re.search(r'^@@ Betriebssystem:(.*)', line)
+			if found:
+				self.operatingsystem = self.splitAndStrip(found)
 				self.resetFlags()
 				continue				
 
@@ -254,6 +266,8 @@ class TestGrepCommand(sublime_plugin.TextCommand):
 				'epic' : self.epic,
 				'environment' : self.environment,
 				'browser' : self.browser,
+				'operatingsystem' : self.operatingsystem,
+				'device' : self.device,
 				'links' : [],
 				'parent' : self.parent
 				})

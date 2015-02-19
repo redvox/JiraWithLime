@@ -181,9 +181,11 @@ class CreateBugIssuesCommand(sublime_plugin.TextCommand):
 					"fixVersions" : [{"name":test['version']}],
 					# "labels" : test['labels'],
 					"assignee" : {'name' : test['assignee']},
-					"customfield_11018" : {"value" : test['domain']},
+					# "customfield_11018" : {"value" : test['domain']},
 					"customfield_11013" : {"value": test['environment']},
-					"customfield_11006" : {"value" : test['browser']}
+					"customfield_16038" : test['browser'],
+					"customfield_16039" : test['device'],
+					"customfield_16040" : test['operatingsystem']
 				}
 			}
 
